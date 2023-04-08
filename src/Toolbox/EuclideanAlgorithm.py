@@ -1,6 +1,6 @@
 class EuclideanAlgorithm:
     @staticmethod
-    def greatestCommonDivisor(a: int, b: int) -> [int]:  # O(n)
+    def greatestCommonDivisor(a: int, b: int) -> [int]:     # O(log(n))?
         if a == 0 or b == 0:
             return a if a > b else b
 
@@ -14,7 +14,7 @@ class EuclideanAlgorithm:
         return x
 
     @staticmethod
-    def leastCommonDivisor(a: int, b: int) -> [int]:  # O(n)
+    def leastDividendForTwoNumbers(a: int, b: int) -> [int]:
         if a == 0 or b == 0:
             return a if a > b else b
         gcd = EuclideanAlgorithm.greatestCommonDivisor(a, b)

@@ -22,19 +22,19 @@ class EuclideanAlgorithmTest(unittest.TestCase):
 
     def test_least_common_divisor_1(self):
         fn_output = 1
-        self.assertEqual(fn_output, EuclideanAlgorithm.leastCommonDivisor(1, 0))
+        self.assertEqual(fn_output, EuclideanAlgorithm.leastDividendForTwoNumbers(1, 0))
 
     def test_least_common_divisor_2(self):
         fn_output = 81
-        self.assertEqual(fn_output, EuclideanAlgorithm.leastCommonDivisor(9, 81))
+        self.assertEqual(fn_output, EuclideanAlgorithm.leastDividendForTwoNumbers(9, 81))
 
     def test_least_common_divisor_3(self):
         fn_output = 135
-        self.assertEqual(fn_output, EuclideanAlgorithm.leastCommonDivisor(135, 135))
+        self.assertEqual(fn_output, EuclideanAlgorithm.leastDividendForTwoNumbers(135, 135))
 
     def test_least_common_divisor_4(self):
         fn_output = 30
-        self.assertEqual(fn_output, EuclideanAlgorithm.leastCommonDivisor(10, 15))
+        self.assertEqual(fn_output, EuclideanAlgorithm.leastDividendForTwoNumbers(10, 15))
 
 
 if __name__ == '__main__':
