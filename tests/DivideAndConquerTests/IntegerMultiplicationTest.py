@@ -1,6 +1,6 @@
 import unittest
 
-from src.DvideAndConquer.IntegerMultiplication import IntegerMultiplicator
+from src.DivideAndConquer.IntegerMultiplication import IntegerMultiplicator
 
 
 class IntegerMultiplicationTest(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-from src.DvideAndConquer.FindBiggest import FindBiggest
+from src.DivideAndConquer.FindBiggest import FindBiggest
 
 
 class FindBiggestTest(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-from src.DvideAndConquer.ClosestPair import Pair, Point, ClosestPair
+from src.DivideAndConquer.ClosestPair import Pair, Point, ClosestPair
 
 
 class ClosestPairTest(unittest.TestCase):

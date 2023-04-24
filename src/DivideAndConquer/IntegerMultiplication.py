@@ -25,7 +25,8 @@ class IntegerMultiplicator:
         n = lX = len(str(x))
         lY = len(str(y))
 
-        if (lX != lY or lX % 2 != 0): return x * y
+        if lX != lY or lX % 2 != 0:
+            return x * y
 
         delimiter = 10 ** (n / 2)
 
@@ -41,7 +42,8 @@ class IntegerMultiplicator:
 
     @staticmethod
     def karatsubaAlgorithm(x: int, y: int) -> int:
-        if (x < 10 or y < 10): return x * y
+        if x < 10 or y < 10:
+            return x * y
 
         n = max(len(str(x)), len(str(y)))
 
