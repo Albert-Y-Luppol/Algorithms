@@ -1,2 +1,2 @@
 class GreedyAlgorithms:
-    @staticmethod
+    pass
