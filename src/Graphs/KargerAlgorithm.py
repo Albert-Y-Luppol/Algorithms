@@ -1,10 +1,9 @@
 import math
-import re
 import copy
 import random
-import functools
 from typing import Dict, List
 from functools import singledispatch
+from Graphs.GraphUtils import GraphUtils
 
 
 class KargerAlgorithm:
@@ -14,7 +13,7 @@ class KargerAlgorithm:
 
     @__get_min_cut_overload.register(str)
     def _(graph_str: str):
-        graph = KargerAlgorithm.strToAdjacencyList(graph_str)
+        graph = GraphUtils.strToAdjacencyList(graph_str)
         return KargerAlgorithm.__getMinCut(graph)
 
     getMinCut = staticmethod(__get_min_cut_overload)
@@ -58,14 +57,3 @@ class KargerAlgorithm:
 
         graph[contract_to] = [n for n in graph[contract_to] + contracting_node if n != contract_to]
         return graph
-
-    @staticmethod
-    def strToAdjacencyList(input_str: str) -> Dict[int, List[int]]:
-        return {
-            int(node[0]): [int(n) for n in node[1:]] for node in (re.split(r'\s+', row.strip())
-                                                                  for row in input_str.strip().split('\n'))
-        }
-
-    @staticmethod
-    def adjacencyListStringify(graph: Dict[int, List[int]]) -> str:
-        return '\n'.join([' '.join(str(n) for n in ([key] + graph[key])) for key in graph.keys()])

@@ -3,16 +3,6 @@ from Graphs.KargerAlgorithm import KargerAlgorithm
 
 
 class KargerAlgorithmTest(unittest.TestCase):
-    def test_str_to_adjacency_list_conversion_1(self):
-        input_str = '1 2\n2 3\n3 1'
-        expected_output = {1: [2], 2: [3], 3: [1]}
-        self.assertEqual(expected_output, KargerAlgorithm.strToAdjacencyList(input_str))
-
-    def test_adjacency_list_to_str_conversion_1(self):
-        input_str = {1: [2], 2: [3], 3: [1]}
-        expected_output = '1 2\n2 3\n3 1'
-        self.assertEqual(expected_output, KargerAlgorithm.adjacencyListStringify(input_str))
-
     # def test_contract_random_node_1(self):
     #     input_str = {1: [2, 3], 2: [1, 3], 3: [1, 2]}
     #     result = KargerAlgorithm.contractRandomNode(input_str)
