@@ -13,7 +13,7 @@ class GraphUtils:
 
     @staticmethod
     def adjacencyListStringify(graph: Dict[int, List[int]]) -> str:
-        return '\n'.join([' '.join(str(n) for n in ({ key }.union(graph[key]))) for key in graph.keys()])
+        return '\n'.join([' '.join(str(n) for n in ({key}.union(graph[key]))) for key in graph.keys()])
 
     @staticmethod
     def generate_directed_graph(vertexes_amount: int) -> Dict[int, Set[int]]:
