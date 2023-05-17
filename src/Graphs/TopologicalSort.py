@@ -30,7 +30,8 @@ class TopologicalSort:
         :raises Exception: If graph is circular.
         """
 
-        TopologicalSort.__circularityValidation(graph)
+        if TopologicalSort.__isGraphCircular(graph):
+            raise Exception('There is no way to order graph with cycle in it!')
 
         result = []
         explored_vertices = set()
@@ -92,3 +93,43 @@ class TopologicalSort:
                 graph[every_vertex_left].remove(vertex_to_collapse)
                 graph[every_vertex_left] = graph[every_vertex_left] | edges_from_collapsing_vertex
 
+    @staticmethod
+    def __isGraphCircular(
+            graph: Dict[int, Set[int]],
+    ) -> bool:
+        path: Set[int] = set()
+        validated: Set[int] = set()
+
+        for vertex in graph.keys():
+            if vertex in validated:
+                continue
+            if len(validated) == len(graph):
+                break
+
+            if TopologicalSort.__isGraphCircularFromVertex(graph, vertex, path, validated):
+                return True
+
+        return False
+
+    @staticmethod
+    def __isGraphCircularFromVertex(
+            graph: Dict[int, Set[int]],
+            vertex: int,
+            path: Set[int],
+            validated: Set[int],
+    ) -> bool:
+        if vertex in path:
+            return True
+
+        path.add(vertex)
+
+        for next_vertex in graph[vertex]:
+            if next_vertex in validated:
+                continue
+
+            if TopologicalSort.__isGraphCircularFromVertex(graph, next_vertex, path, validated):
+                return True
+
+        path.remove(vertex)
+        validated.add(vertex)
+        return False

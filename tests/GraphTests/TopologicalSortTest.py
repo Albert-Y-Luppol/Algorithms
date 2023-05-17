@@ -32,9 +32,8 @@ class TopologicalSortTest(unittest.TestCase):
         self.assertEqual(expected_output, TopologicalSort.dfsAlgorithm(input_graph))
 
     def test_dfs_algorithm_3(self):
-        input_graph = {1: {2}, 2: {3}, 3: {1, 4}, 4: {}, 5: {}}
+        input_graph = {1: {2, 5}, 2: {3}, 3: {1, 4, 5}, 4: {}, 5: {}}
         try:
-            TopologicalSort.dfsAlgorithm(input_graph)
             print(TopologicalSort.dfsAlgorithm(input_graph))
             self.assertEqual('Error should be erased!', '')
         except Exception as e:
