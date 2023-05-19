@@ -4,7 +4,7 @@ import networkx as nx
 import random
 import re
 from typing import FrozenSet
-from Graphs.KosarajuAlgorithm import Graph, KosarajuAlgorithm
+from Graphs.KosarajuAlgorithm import KosarajuAlgorithm
 
 
 class KosarajuAlgorithmTest(unittest.TestCase):
@@ -188,7 +188,7 @@ class KosarajuAlgorithmTest(unittest.TestCase):
         graphs_edges = [self.__generate_graph_edges(
             vertices,
             random.randint(vertices - 1, int(vertices * (vertices - 1) / 2)),
-        ) for vertices in range(300, 320)]
+        ) for vertices in range(901, 903)]
         recursive_time = timeit.timeit(
             lambda: [KosarajuAlgorithm.findStronglyConnectedComponents(
                 KosarajuAlgorithm.constructGraphFromEdgesList(edges),
@@ -252,7 +252,7 @@ class KosarajuAlgorithmTest(unittest.TestCase):
             min(recursive_complexity, iterative_complexity, lib_recursive_complexity, lib_iterative_complexity),
         )
 
-    def test_large_graph_recursive(self):
+    def test_large_graph(self):
         with open('./test_data/scc.txt', 'r') as file:
             input_str = file.read()
         edges = [tuple(map(int, re.split(r'\s+', edge_str.strip()))) for edge_str in input_str.strip().split('\n')]
@@ -260,9 +260,7 @@ class KosarajuAlgorithmTest(unittest.TestCase):
         graph = KosarajuAlgorithm.constructGraphFromEdgesList(edges)
         scc = KosarajuAlgorithm.findStronglyConnectedComponents(graph)
         scc_length = list(map(len, scc))
-
         result = sorted(scc_length, reverse=True)[:min(5, len(scc_length))]
-        print(result)
 
         expected_scc = self.__get_scc(edges)
         expected_scc_length = list(map(len, expected_scc))
