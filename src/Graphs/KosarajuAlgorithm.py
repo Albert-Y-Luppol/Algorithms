@@ -82,6 +82,7 @@ class KosarajuAlgorithm:
             graph: Graph,
             reverse=False
     ) -> [int]:
+        counter = 0
         result = []
         i = 0 if reverse else 1
 
@@ -93,6 +94,7 @@ class KosarajuAlgorithm:
             explored = set(result)
 
             while len(edges_stack) > 0:
+                counter += 1
                 previous_vertex, current_vertex = edges_stack.pop()
 
                 if previous_vertex == current_vertex:
@@ -105,8 +107,12 @@ class KosarajuAlgorithm:
                 explored.add(current_vertex)
                 edges_stack.append((current_vertex, current_vertex))
 
-                edges_of_current_vertex = [(current_vertex, next_vertex) for next_vertex in graph[current_vertex][i]]
+                edges_of_current_vertex = [(current_vertex, next_vertex)
+                                           for next_vertex in graph[current_vertex][i]
+                                           if next_vertex not in explored]
                 edges_stack += edges_of_current_vertex
+
+            print(counter)
 
         return result
 

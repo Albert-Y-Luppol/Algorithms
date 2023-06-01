@@ -256,7 +256,7 @@ class KosarajuAlgorithmTest(unittest.TestCase):
         with open('./test_data/scc.txt', 'r') as file:
             input_str = file.read()
         edges = [tuple(map(int, re.split(r'\s+', edge_str.strip()))) for edge_str in input_str.strip().split('\n')]
-
+        print(len(edges))
         graph = KosarajuAlgorithm.constructGraphFromEdgesList(edges)
         scc = KosarajuAlgorithm.findStronglyConnectedComponents(graph)
         scc_length = list(map(len, scc))
