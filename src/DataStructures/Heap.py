@@ -38,7 +38,7 @@ class Heap:
     def __get_parent_item(self, child_key: K) -> Union[Tuple[K, T], Tuple[None, None]]:
         if self.__dictionary[child_key] == 0:
             return None, None
-        return self.__heap[self.__dictionary[child_key] // 2]
+        return self.__heap[(self.__dictionary[child_key] - 1) // 2]
 
     def __bubble_up_item(self, item_key: K) -> None:
         while True:
@@ -132,3 +132,60 @@ class Heap:
 
     def items(self) -> [T]:
         return list(map(lambda x: x[1], self.__heap))
+
+    def peak(self) -> T:
+        return None if len(self.__heap) == 0 else self.__heap[0][1]
+
+    def __repr__(self):
+        if len(self.__heap) == 0:
+            return 'None'
+
+        lines, *_ = self.__display_aux(self.__heap[0][0])
+        return '\n'.join(lines)
+
+    def __display_aux(self, key: K):
+        """Returns list of strings, width, height, and horizontal coordinate of the root."""
+        left_child, right_child = self.__get_children(key)
+        # No child.
+        if left_child is None and right_child is None:
+            line = '%s' % self[key]
+            width = len(line)
+            height = 1
+            middle = width // 2
+            return [line], width, height, middle
+
+        # Only left child.
+        if right_child is None:
+            lines, n, p, x = self.__display_aux(left_child[0])
+            s = '%s' % self[key]
+            u = len(s)
+            first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
+            second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
+            shifted_lines = [line + u * ' ' for line in lines]
+            return [first_line, second_line] + shifted_lines, n + u, p + 2, n + u // 2
+
+        # Only right child.
+        if left_child is None:
+            lines, n, p, x = self.__display_aux(left_child[0])
+            s = '%s' % self[key]
+            u = len(s)
+            first_line = s + x * '_' + (n - x) * ' '
+            second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
+            shifted_lines = [u * ' ' + line for line in lines]
+            return [first_line, second_line] + shifted_lines, n + u, p + 2, u // 2
+
+        # Two children.
+        left, n, p, x = self.__display_aux(left_child[0])
+        right, m, q, y = self.__display_aux(right_child[0])
+        s = '%s' % self[key]
+        u = len(s)
+        first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s + y * '_' + (m - y) * ' '
+        second_line = x * ' ' + '/' + (n - x - 1 + u + y) * ' ' + '\\' + (m - y - 1) * ' '
+        if p < q:
+            left += [n * ' '] * (q - p)
+        elif q < p:
+            right += [m * ' '] * (p - q)
+        zipped_lines = zip(left, right)
+        lines = [first_line, second_line] + [a + u * ' ' + b for a, b in zipped_lines]
+        return lines, n + m + u, max(p, q) + 2, n + u // 2
+

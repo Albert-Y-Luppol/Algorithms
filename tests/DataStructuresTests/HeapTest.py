@@ -1,4 +1,5 @@
 import unittest
+import random
 from src.DataStructures.Heap import Heap
 
 
@@ -46,3 +47,28 @@ class HeapTest(unittest.TestCase):
         for res in result_arr:
             item = heap.pop()
             self.assertEqual(res, item)
+
+    def test_complex(self):
+        random_cof = 0.3
+        for i in range(1, 100):
+            input_arr = [n for n in range(1, i + 1)]
+            random_arr = input_arr.copy()
+            random.shuffle(random_arr)
+            heap = Heap(lambda a, b: a > b)
+            removals = 0
+
+            for item in random_arr:
+
+                heap.add(item)
+                if random_cof > random.random():
+                    removals += 1
+                    element = heap.pop()
+                    input_arr.remove(element)
+
+            if len(input_arr) != 0:
+                self.assertEqual(input_arr[len(input_arr) - 1], heap.peak())
+
+            input_arr.reverse()
+            for n in input_arr:
+                m = heap.pop()
+                self.assertEqual(n, m)
