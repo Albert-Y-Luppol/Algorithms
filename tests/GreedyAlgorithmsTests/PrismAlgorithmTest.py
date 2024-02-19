@@ -1,6 +1,6 @@
 import unittest
-from typing import List
 from GreedyAlgorithms.PrismAlgorithm import PrismAlgorithm, Edge, construct_graph
+
 
 class PrismAlgorithmTest(unittest.TestCase):
     def test_1(self):
