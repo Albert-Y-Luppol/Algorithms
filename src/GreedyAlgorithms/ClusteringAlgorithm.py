@@ -52,6 +52,7 @@ class ClusteringAlgorithm:
     @staticmethod
     def find_max_spacing_k_clusters(edges: [Edge], clusters_count: int) -> (int, UnionFind):
         edges_heap: List[Edge] = []
+        result_heap = []
         vertices: Set[int] = set()
         for edge in edges:
             heapq.heappush(edges_heap, edge)
@@ -60,13 +61,16 @@ class ClusteringAlgorithm:
 
         union_find = UnionFind([Vertex(vertex) for vertex in vertices])
 
-        max_spacing = 0
-        while len(edges_heap) > 0:
+        while len(union_find.clusters) > clusters_count:
+            edge = heapq.heappop(edges_heap)
+            union_find.union(edge.vertex1, edge.vertex2)
+
+        max_spacing = None
+        while max_spacing is None:
             edge = heapq.heappop(edges_heap)
             leader1 = union_find.find(edge.vertex1)
             leader2 = union_find.find(edge.vertex2)
-            if len(union_find.clusters) > clusters_count or leader1 == leader2:
-                union_find.union(edge.vertex1, edge.vertex2)
+            if leader1 != leader2:
                 max_spacing = edge.distance
 
         return max_spacing, union_find

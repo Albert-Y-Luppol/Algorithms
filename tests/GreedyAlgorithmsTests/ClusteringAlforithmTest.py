@@ -25,7 +25,7 @@ class ClusteringAlgorithmTest(unittest.TestCase):
         print(max_distance)
         print(uf)
 
-        self.assertEqual(3, max_distance)
+        self.assertEqual(7, max_distance)
 
     def test_2(self):
         with open('./test_data/clustering1.txt', 'r') as file:
@@ -36,7 +36,7 @@ class ClusteringAlgorithmTest(unittest.TestCase):
         max_distance, uf = ClusteringAlgorithm.find_max_spacing_k_clusters(edges, 4)
         print(max_distance)
         print(uf)
-        self.assertEqual(10000, max_distance)
+        self.assertEqual(106, max_distance)
 
     def test_3(self):
         vertex = (False, False, False)
