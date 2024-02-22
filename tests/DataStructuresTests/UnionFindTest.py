@@ -24,6 +24,8 @@ class UnionFindTest(unittest.TestCase):
         print(uf)
 
         for node in nodes:
-            self.assertTrue(uf.find(node.key), 3)
+            self.assertEqual(uf.find(node.key), 3)
+
+        self.assertEqual(str(uf.clusters), str({3}))
 
 

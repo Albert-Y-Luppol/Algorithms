@@ -1,4 +1,4 @@
-from typing import List, Any, Union, Dict, Protocol
+from typing import List, Any, Union, Dict, Protocol, Set
 
 
 class INode(Protocol):
@@ -25,10 +25,13 @@ class UnionFindNode:
 class UnionFind:
     def __init__(self, nodes_list: List[INode]):
         nodes = {}
+        clusters = set()
         for node in nodes_list:
             nodes[node.key] = UnionFindNode(node)
+            clusters.add(node.key)
 
         self.__nodes: Dict[Union[str, int], UnionFindNode] = nodes
+        self.clusters: Set[Union[str, int]] = clusters
 
     def find(self, key: Union[str, int]) -> Union[str, int]:
         node = self.__nodes[key]
@@ -53,16 +56,20 @@ class UnionFind:
 
         if node1.rank > node2.rank:
             node2.leader = node1.key
+            self.clusters.remove(node2.key)
         elif node2.rank > node1.rank:
             node1.leader = node2.key
+            self.clusters.remove(node1.key)
         else:
             node2.leader = node1.key
+            self.clusters.remove(node2.key)
             node1.rank += 1
 
     def __str__(self):
         result = ""
         for node in self.__nodes.values():
             result += str(node) + "\n"
+        result += f'\nclusters: {str(self.clusters)}'
         return result
 
 
