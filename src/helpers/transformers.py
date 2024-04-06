@@ -1,5 +1,8 @@
 import re
+import math
 from src.helpers.types import AdjacencyList
+from typing import Tuple
+import numbers
 
 
 def str_to_adjacency_list(input_str: str) -> AdjacencyList:
@@ -20,3 +23,20 @@ def str_to_adjacency_list(input_str: str) -> AdjacencyList:
         else:
             result[tail][head] = weight
     return result
+
+
+def points_to_graph_2d(points: [Tuple[numbers.Number, numbers.Number]]) -> AdjacencyList[int, float]:
+    n = len(points)     # amount
+    graph: AdjacencyList[int, float] = {}
+    for i in range(n):
+        graph[i] = {}
+
+    for p1 in range(n):
+        for p2 in range(p1 + 1, n):
+            x1, y1 = points[p1]
+            x2, y2 = points[p2]
+            edge = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+            graph[p1][p2] = edge
+            graph[p2][p1] = edge
+
+    return graph
