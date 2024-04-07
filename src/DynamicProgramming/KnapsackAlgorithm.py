@@ -1,4 +1,4 @@
-from src.helpers.loader import print_progress_bar
+from src.helpers.monitoring import print_progress_bar
 
 
 class KnapsackAlgorithm:
