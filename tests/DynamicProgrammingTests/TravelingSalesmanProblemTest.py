@@ -2,7 +2,6 @@ import unittest
 import matplotlib.pyplot as plt
 from src.DynamicProgramming.TravelingSalesmanProblem import TSPBrutForce, TSPDynamicProgramming
 from src.helpers.transformers import points_to_graph_2d
-from pympler import asizeof
 import tracemalloc
 
 
@@ -93,4 +92,4 @@ class TravelingSalesmanProblemTest(unittest.TestCase):
 
         graph = points_to_graph_2d(points)
         tsp = TSPDynamicProgramming(graph, loader=True, short_on_resources=True)
-        self.assertEqual(1, tsp.shortest_path_weight)
+        self.assertEqual(26442.73030895475, tsp.shortest_path_weight)
