@@ -5,7 +5,7 @@ from src.DynamicProgramming.BellmanFordAlgorithm import BellmanFordAlgorithm
 from src.DynamicProgramming.FloydWarshallAlforithm import FloydWarshallAlgorithm
 from src.DynamicProgramming.JohnsonAlgorithm import JohnsonAlgorithm
 from src.helpers.transformers import str_to_adjacency_list
-from src.helpers.loader import print_progress_bar
+from src.helpers.monitoring import print_progress_bar
 
 
 class ShortestPathsAlgorithmsTest(unittest.TestCase):

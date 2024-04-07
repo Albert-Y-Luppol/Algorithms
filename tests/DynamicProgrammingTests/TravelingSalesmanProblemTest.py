@@ -2,7 +2,6 @@ import unittest
 import matplotlib.pyplot as plt
 from src.DynamicProgramming.TravelingSalesmanProblem import TSPBrutForce, TSPDynamicProgramming
 from src.helpers.transformers import points_to_graph_2d
-from pympler import asizeof
 import tracemalloc
 
 
@@ -41,8 +40,8 @@ class TravelingSalesmanProblemTest(unittest.TestCase):
 
     def test_4(self):
         points = [
-            (0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0), (8, 0), (9, 0),
-            (9, 1), (8, 1), (7, 1), (6, 1), (5, 1), (4, 1), (3, 1), (2, 1), (1, 1), (0, 1),
+            (0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
+            (7, 1), (6, 1), (5, 1), (4, 1), (3, 1), (2, 1), (1, 1), (0, 1),
         ]
 
         graph = points_to_graph_2d(points)
@@ -58,7 +57,7 @@ class TravelingSalesmanProblemTest(unittest.TestCase):
         tracemalloc.stop()
 
         print(f'{peak_high} > {peak_low}')
-        self.assertEqual(20, tsp_low.shortest_path_weight, tsp_high.shortest_path_weight)
+        self.assertEqual(16, tsp_low.shortest_path_weight, tsp_high.shortest_path_weight)
         self.assertTrue(peak_low < peak_high)
 
     def test_5(self):

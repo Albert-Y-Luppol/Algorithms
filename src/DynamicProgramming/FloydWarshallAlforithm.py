@@ -1,6 +1,6 @@
 from src.helpers.types import AdjacencyList
 from copy import deepcopy
-from src.helpers.loader import print_progress_bar
+from src.helpers.monitoring import print_progress_bar
 
 
 class FloydWarshallAlgorithm:

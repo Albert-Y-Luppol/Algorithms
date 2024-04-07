@@ -1,5 +1,5 @@
 from src.helpers.types import AdjacencyList
-from src.helpers.loader import print_progress_bar
+from src.helpers.monitoring import print_progress_bar, print_monitor
 from itertools import combinations
 from math import comb
 
@@ -74,13 +74,15 @@ class TSPDynamicProgramming:
         total_iterations = sum(comb(vertices_amount - 1, m) for m in range(2, vertices_amount))
         for m in range(2, vertices_amount):  # all combinations
             if short_on_resources:
+                memo = last_dp
                 last_dp = dp
-                dp = {}
+                dp = memo
+                dp.clear()  # memory optimization
 
             for S in combinations(other_vertices, m):
                 if loader:
                     iteration += 1
-                    print_progress_bar(iteration, total_iterations)
+                    print_monitor(iteration, total_iterations)
 
                 bits = 0
                 for bit in S:
