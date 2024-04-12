@@ -15,7 +15,6 @@ class KnapsackAlgorithm:
                 print_progress_bar(i, len(items), prefix='Progress:', suffix='Complete', length=50)
         return last_row[len(last_row) - 1]
 
-
     @staticmethod
     def optimal_solution(items: [(int, int)], capacity: int):
         A = [[0] * (capacity + 1) for _ in range(len(items))]
@@ -39,4 +38,52 @@ class KnapsackAlgorithm:
             i -= 1
 
         return optimal_solution
+
+
+class KnapsackHeuristicAlgorithm:
+    def __init__(self, items: [(int, int)], capacity: int, error_margin=1, progress_bar=False):
+        filtered_items = [item for item in items if item[1] <= capacity]
+        v_max = max(items, key=lambda t: t[0])[0]
+        n = len(items)
+        m = int((error_margin * v_max) // n)
+        optimised_items = [(value // m, space) for value, space in filtered_items]
+        v_optimized_max = max(optimised_items, key=lambda t: t[0])[0]
+
+        A = [[float('inf')] * (v_optimized_max * n + 1) for _ in range(len(items))]
+        A[0][0] = 0
+
+        progress_bar_i = 0
+        progress_bar_total = n * v_optimized_max * n
+
+        for i in range(1, len(items)):
+            v_i, w_i = optimised_items[i]
+            for x in range(v_optimized_max * n + 1):
+                A[i][x] = min(
+                    A[i-1][x],
+                    (w_i if v_i >= x else w_i + A[i-1][x-v_i]))
+
+                if progress_bar:
+                    progress_bar_i += 1
+                    print_progress_bar(progress_bar_i, progress_bar_total)
+
+        max_filled_knapsack_capacity = 0
+        optimised_value_for_max = None
+        for x in range(v_optimized_max * n + 1):
+            filled_capacity = A[n - 1][x]
+            if capacity >= filled_capacity >= max_filled_knapsack_capacity:
+                optimised_value_for_max = x
+
+        # optimal solution reconstruction
+        optimal_solution_indexes = []
+        for i in range(n - 1, -1, -1):
+            if i > 0:
+                is_ith_item_included = A[i][optimised_value_for_max] != A[i-1][optimised_value_for_max]
+                if is_ith_item_included:
+                    optimal_solution_indexes.append(i)
+                    optimised_value_for_max -= optimised_items[i][0]
+            else:
+                optimal_solution_indexes.append(i)
+
+        self.knapsack_items = [filtered_items[i] for i in optimal_solution_indexes]
+        self.value = sum([item[0] for item in self.knapsack_items])
 

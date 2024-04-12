@@ -1,6 +1,7 @@
 import unittest
 import matplotlib.pyplot as plt
-from src.DynamicProgramming.TravelingSalesmanProblem import TSPBrutForce, TSPDynamicProgramming
+from src.DynamicProgramming.TravelingSalesmanProblem import (TSPBrutForce, TSPDynamicProgramming,
+                                                             TSPHeuristicNearestNeighbor)
 from src.helpers.transformers import points_to_graph_2d
 import tracemalloc
 
@@ -93,3 +94,20 @@ class TravelingSalesmanProblemTest(unittest.TestCase):
         graph = points_to_graph_2d(points)
         tsp = TSPDynamicProgramming(graph, loader=True, short_on_resources=True)
         self.assertEqual(26442.73030895475, tsp.shortest_path_weight)
+
+    def test_7(self):
+        points = [(0, 0), (1, 0), (1, 1), (0, 1)]
+        tsp = TSPHeuristicNearestNeighbor(points)
+        self.assertEqual(4, tsp.path_length)
+        self.assertEqual([0, 1, 2, 3], list(map(lambda p: p[0], tsp.path)))
+
+    def test_8(self):
+        with open('test_data/tsp_nn.txt') as file:
+            input_str = file.read()
+
+        row_strs = input_str.strip().split('\n')[1:]
+        row_tuples = [tuple(s.strip().split()) for s in row_strs]
+        points = [(float(x), float(y))for n, x, y in row_tuples]
+
+        tsp = TSPHeuristicNearestNeighbor(points, loader=True)
+        self.assertEqual(1203406.5012708856, tsp.path_length)

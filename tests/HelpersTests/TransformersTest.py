@@ -1,6 +1,8 @@
 import math
 import unittest
-from src.helpers.transformers import str_to_adjacency_list, points_to_graph_2d
+import heapdict
+
+from src.helpers.transformers import str_to_adjacency_list, points_to_graph_2d, points_to_heaped_graph_2d
 
 
 class TransformersTest(unittest.TestCase):
@@ -24,4 +26,3 @@ class TransformersTest(unittest.TestCase):
             2: {0: math.sqrt(2), 1: 1, 3: 1},
             3: {0: 1, 1: math.sqrt(2), 2: 1},
         }, graph)
-

@@ -1,7 +1,10 @@
+import math
+
 from src.helpers.types import AdjacencyList
 from src.helpers.monitoring import print_progress_bar, print_monitor
 from itertools import combinations
 from math import comb
+from typing import Tuple, Set
 
 
 class PathCombination:
@@ -141,3 +144,162 @@ class TSPDynamicProgramming:
                 path.append(last_vertex)
 
             self.shortest_path = path
+
+
+class TSPHeuristicNearestNeighbor:
+    def __init__(self, points: [Tuple[float, float]], loader=False):
+        points_amount = len(points)
+
+        P = [(i, points[i])for i in range(points_amount)]
+        Px = sorted(P, key=lambda p: p[1][0])   # sorted by x coordinate
+        Py = sorted(P, key=lambda p: p[1][1])   # sorted by y coordinate
+
+        for i in range(points_amount):
+            P[i] = points[i]
+
+        del P
+
+        Px_index_map = {}
+        for i in range(points_amount):
+            point_key, _ = Px[i]
+            Px_index_map[point_key] = i
+
+        Py_index_map = {}
+        for i in range(points_amount):
+            point_key, _ = Py[i]
+            Py_index_map[point_key] = i
+
+        path_length = 0
+        initial_point = Px[Px_index_map[0]]
+        path = [initial_point]
+        visited = {initial_point[0]}
+        current_point = initial_point
+
+        total_iterations = points_amount
+        iteration = 0
+
+        while len(visited) < points_amount:
+            next_point, distance = self.__get_closest_point(
+                Px,
+                Py,
+                current_point,
+                Px_index_map[current_point[0]],
+                Py_index_map[current_point[0]],
+                visited,
+            )
+
+            visited.add(next_point[0])
+            path_length += distance
+            current_point = next_point
+            path.append(next_point)
+            if loader:
+                iteration += 1
+                print_progress_bar(iteration, total_iterations)
+
+        last_distance = self.__get_distance_between_points(current_point[1], initial_point[1])
+        self.path_length = path_length + last_distance
+        self.path = path
+
+    @staticmethod
+    def __get_distance_between_points(
+            p1: Tuple[float, float],
+            p2: Tuple[float, float],
+    ) -> float:
+        return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+
+    def __get_closest_point(
+                            self,
+                            Px: [Tuple[int, Tuple[float, float]]],
+                            Py: [Tuple[int, Tuple[float, float]]],
+                            current_point: Tuple[int, Tuple[float, float]],
+                            Px_i: int,
+                            Py_i: int,
+                            points_to_ignore: Set[int],
+                            ) -> Tuple[Tuple[int, Tuple[float, float]], float]:
+        delta = float('inf')
+        result: Tuple[int, Tuple[float, float]] = (0, (0, 0))
+        visited = set()
+
+        # search left
+        i = Px_i - 1
+        while i >= 0 and Px[Px_i][1][0] - Px[i][1][0] <= delta:
+            point = Px[i]
+            i -= 1
+            if (
+                    point[0] in points_to_ignore or
+                    point[0] == result[0]
+                    or point[0] in visited
+            ):
+                continue
+
+            visited.add(point[0])
+            distance = self.__get_distance_between_points(current_point[1], point[1])
+            result, delta = self.__compare_points(delta, distance, point, result)
+
+        # search right
+        i = Px_i + 1
+        while i < len(Px) and Px[i][1][0] - Px[Px_i][1][0] <= delta:
+            point = Px[i]
+            i += 1
+            if (
+                    point[0] in points_to_ignore or
+                    point[0] == result[0]
+                    or point[0] in visited
+            ):
+                continue
+
+            visited.add(point[0])
+            distance = self.__get_distance_between_points(current_point[1], point[1])
+            result, delta = self.__compare_points(delta, distance, point, result)
+
+        # search down
+        i = Py_i - 1
+        while i >= 0 and Py[Py_i][1][0] - Py[i][1][0] <= delta:
+            point = Py[i]
+            i -= 1
+            if (
+                    point[0] in points_to_ignore or
+                    point[0] == result[0]
+                    or point[0] in visited
+            ):
+                continue
+
+            visited.add(point[0])
+            distance = self.__get_distance_between_points(current_point[1], point[1])
+            result, delta = self.__compare_points(delta, distance, point, result)
+
+        # search up
+        i = Py_i + 1
+        while i < len(Py) and Py[i][1][0] - Py[Py_i][1][0] <= delta:
+            point = Py[i]
+            i += 1
+            if (
+                    point[0] in points_to_ignore or
+                    point[0] == result[0]
+                    or point[0] in visited
+            ):
+                continue
+
+            visited.add(point[0])
+            distance = self.__get_distance_between_points(current_point[1], point[1])
+            result, delta = self.__compare_points(delta, distance, point, result)
+
+        return result, delta
+
+    @staticmethod
+    def __compare_points(
+            delta: float,
+            distance: float,
+            point: Tuple[int, Tuple[float, float]],
+            closest_point: Tuple[int, Tuple[float, float]],
+    ) -> Tuple[Tuple[int, Tuple[float, float]], float]:
+        result = closest_point
+        min_delta = delta
+        if delta >= distance:
+            if distance == delta:
+                if result[0] > point[0]:
+                    result = point
+            else:
+                result = point
+                min_delta = distance
+        return result, min_delta
