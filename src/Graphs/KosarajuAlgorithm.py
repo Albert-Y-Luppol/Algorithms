@@ -112,8 +112,6 @@ class KosarajuAlgorithm:
                                            if next_vertex not in explored]
                 edges_stack += edges_of_current_vertex
 
-            print(counter)
-
         return result
 
     @staticmethod
